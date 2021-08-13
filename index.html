@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body>
+    <center>
+    <h1>Signup</h1>
+    <form id="reg-form" autocomplete="off">
+        <label>Username:</label>
+        <input type="text" id="username" placeholder="Username"><br><br>
+        <label>Email:</label>
+        <input type="email" id="email" placeholder="Email" autocomplete="off"><br><br>
+        <label>Password:</label>
+        <input type="password" id="password" placeholder="Password"><br><br>
+        <input type="submit" value="Register">
+        <p>Already have an account? <a href="./login.html" style="text-decoration: none;">Login here.</a></p>        
+    </form>
+    </center>
+
+    <script>
+        const form = document.getElementById('reg-form');
+        form.addEventListener('submit', registerUser);
+
+        async function registerUser(event){
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const result = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
+            }).then((res) => res.json())
+
+            if (result.status === 'ok') {
+                alert('Success!');
+            }else{
+                alert(result.error);
+            }
+        }
+    </script>
+</body>
+</html>
